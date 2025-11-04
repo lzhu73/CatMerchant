@@ -141,7 +141,7 @@ class GameScene extends Phaser.Scene {
 
     // hint
     this.infoBar = this._makeBar();
-    this.infoText = this.add.text(0, 0, '-Report reward: Fake: $5, Danger: $10\n-Don’t get caught if you want to sell\n those...\n-Pay attention to how much you have', {
+    this.infoText = this.add.text(0, 0, '-Report Reward: Fake: $5, Danger: $10\n-Don’t get caught if you want to sell\n those...\n-Pay attention to how much you have', {
       fontFamily: 'monospace',
       fontSize: '16px',
       color: '#4d3f3fff',
@@ -531,7 +531,7 @@ class GameScene extends Phaser.Scene {
   _onCounter() {
     if (!this._encOK()) return;
     const e = this.state.encounter;
-    const pct = this._randInt(5, 35) / 100;
+    const pct = this._randInt(5, 40) / 100;
 
     if (e.type === 'seller') {
       this.state.counterPending = Math.max(1, Math.round(e.price * (1 - pct)));
