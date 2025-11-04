@@ -298,7 +298,7 @@ class GameScene extends Phaser.Scene {
 
   // flow
   _onStartPressed() {
-    if (this.state.money <= 0) this.state.money = 100; // reset only when user presses Start
+    if (this.state.money < 0) this.state.money = 100; // reset only when user presses Start
     this.state.gameOver = false;
     this.state.running = true;
     this._refreshMoney();
@@ -312,7 +312,7 @@ class GameScene extends Phaser.Scene {
     this.state.gameOver = true;
     this.state.running = false;
 
-    if (this.state.money <= 0) this._showToast('GAMEOVER', 1500);
+    if (this.state.money < 0) this._showToast('GAMEOVER', 1500);
     else this._showToast('You Win!', 1500);
     await this.wait(1500);
     window.location.reload(); // full reload, same as browser refresh
@@ -476,7 +476,7 @@ class GameScene extends Phaser.Scene {
     if (this.state.encounter?.type === 'seller' && !this.state.scanned) {
       this.state.money -= this.SCAN_COST;
       this._refreshMoney();
-      if (this.state.money <= 0 || this.state.money >= 200) return this._gameOver();
+      if (this.state.money < 0 || this.state.money >= 200) return this._gameOver();
     }
     this.state.scanned = true;
 
@@ -531,7 +531,7 @@ class GameScene extends Phaser.Scene {
   _onCounter() {
     if (!this._encOK()) return;
     const e = this.state.encounter;
-    const pct = this._randInt(5, 25) / 100;
+    const pct = this._randInt(5, 35) / 100;
 
     if (e.type === 'seller') {
       this.state.counterPending = Math.max(1, Math.round(e.price * (1 - pct)));
@@ -582,7 +582,7 @@ class GameScene extends Phaser.Scene {
       if (this.state.inventory.length >= this.MAX_INV) return;
       this.state.money -= finalPrice;
       this._refreshMoney();
-      if (this.state.money <= 0 || this.state.money >= 200) return this._gameOver();
+      if (this.state.money < 0 || this.state.money >= 200) return this._gameOver();
 
       // store both paid & original
       this.state.inventory.push({
@@ -604,7 +604,7 @@ class GameScene extends Phaser.Scene {
       const basis = (it.fake || it.danger) ? it.originalPrice : it.paidPrice;
 
       if (it.fake && Math.random() < this.CATCH_PROB_FAKE) {
-        punish += basis;                 // penalty = 1× original
+        punish += it.paidPrice;                 // penalty = 1× paid
         flagsHit.push('Fake');
       }
       if (it.danger && Math.random() < this.CATCH_PROB_DANGER) {
@@ -626,7 +626,7 @@ class GameScene extends Phaser.Scene {
         this._showToast(`Sold for $${finalPrice}`, 700);
       }
 
-      if (this.state.money <= 0 || this.state.money >= 200) return this._gameOver();
+      if (this.state.money < 0 || this.state.money >= 200) return this._gameOver();
       
     }
 
@@ -651,7 +651,7 @@ class GameScene extends Phaser.Scene {
 
     this.state.money += reward;
     this._refreshMoney();
-    if (this.state.money <= 0 || this.state.money >= 200) return this._gameOver();
+    if (this.state.money < 0 || this.state.money >= 200) return this._gameOver();
 
     const msg = reward > 0 ? `Report + $${reward}` : `False Report – $5`;
     this._showToast(msg, 800);
