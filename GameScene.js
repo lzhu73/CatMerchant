@@ -601,10 +601,10 @@ class GameScene extends Phaser.Scene {
       let punish = 0;
       const flagsHit = [];
 
-      const basis = (it.fake || it.danger) ? it.originalPrice : it.paidPrice;
+      const basis = (it.danger) ? it.originalPrice : it.paidPrice;
 
       if (it.fake && Math.random() < this.CATCH_PROB_FAKE) {
-        punish += it.paidPrice;                 // penalty = 1× paid
+        punish += it.basis;                 // penalty = 1× paid
         flagsHit.push('Fake');
       }
       if (it.danger && Math.random() < this.CATCH_PROB_DANGER) {
