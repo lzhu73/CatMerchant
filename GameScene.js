@@ -366,7 +366,7 @@ class GameScene extends Phaser.Scene {
   }
 
   _spawnCustomerAnimated(after) {
-    // kill any in-flight tweens on this sprite to avoid conflicts
+    // avoid conflicts
     this.tweens.killTweensOf(this.customerSprite);
 
     this.state.customerPresent = true;
@@ -601,14 +601,14 @@ class GameScene extends Phaser.Scene {
       let punish = 0;
       const flagsHit = [];
 
-      const basis = (it.danger) ? it.originalPrice : it.paidPrice;
+      const basis = (it.fake || it.danger) ? it.originalPrice : it.paidPrice;
 
       if (it.fake && Math.random() < this.CATCH_PROB_FAKE) {
-        punish += it.basis;                 // penalty = 1× paid
+        punish += basis;                 // penalty = 1 * original
         flagsHit.push('Fake');
       }
       if (it.danger && Math.random() < this.CATCH_PROB_DANGER) {
-        punish += basis * 3;             // penalty = 3× original
+        punish += basis * 3;             // penalty = 3 * original
         flagsHit.push('Dangerous');
       }
 
@@ -625,6 +625,7 @@ class GameScene extends Phaser.Scene {
       } else {
         this._showToast(`Sold for $${finalPrice}`, 700);
       }
+
 
       if (this.state.money < 0 || this.state.money >= 200) return this._gameOver();
       
